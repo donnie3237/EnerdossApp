@@ -1,0 +1,41 @@
+{
+  "manufacturer": "Jinko Solar",
+  "model": "JKM550M-72HL4",
+  "type": "Monocrystalline PERC",
+  "peak_power_w": 550,
+  "efficiency_percent": 21.3,
+  "power_tolerance_w": {
+    "value": "5%"
+  },
+  "electrical_characteristics_stc": {
+    "nominal_voltage_v": 41.68,
+    "nominal_current_a": 13.2,
+    "open_circuit_voltage_v": 49.9,
+    "short_circuit_current_a": 13.98
+  },
+  "temperature_coefficients": {
+    "pmax_percent_per_c": -0.35
+  },
+  "mechanical_properties": {
+    "dimensions_mm": {
+      "length": 2384,
+      "width": 1096
+    },
+    "operating_conditions": {
+      "max_system_voltage_v": 1500,
+      "operating_temperature_c": {
+        "min": -40,
+        "max": 85
+      }
+    },
+    "warranty": {
+      "product_years": 12,
+      "performance_years": 25,
+      "performance_guarantee_percent": {
+        "first_year": 98,
+        "annual_degradation": 0.55,
+        "end_of_25_years": 84.8
+      }
+    }
+  }
+}

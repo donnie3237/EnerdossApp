@@ -1,0 +1,6 @@
+.image {
+  background-image: url("/gh.png");
+  aspect-ratio: 16/9;
+  max-width: 100vw;
+  background-size: cover;
+}
