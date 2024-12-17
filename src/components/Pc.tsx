@@ -10,7 +10,7 @@ function Pc() {
       className="fixed top-0 mt-0 z-[999] h-[60px] w-[100vw] px-2 md:border-b-[0px] border-[#dadada] left-0  bg-[#ffffff] dark:bg-[#030712] dark:border-[#18202d] flex justify-between items-center cursor-grab"
     >
       <div className="flex items-center">
-        <img src="logo.png" className="h-[35px]" alt="" />
+        <img src="/logo.png" className="h-[35px]" alt="" />
         <h1 className="font-bold text-2xl ml-2">Enerdoss</h1>
         <ThemeToggle />
       </div>

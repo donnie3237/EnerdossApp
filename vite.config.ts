@@ -10,6 +10,11 @@ export default defineConfig({
     react(),
     MillionLint.vite(),
   ],
+  server:{
+    hmr:{
+      overlay: false
+    }
+  },
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),

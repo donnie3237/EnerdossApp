@@ -3,9 +3,18 @@ import { TailwindIndicator } from "@/components/tailwind-indicator";
 import Pc from "./components/Pc";
 import { PCV } from "@/config/display";
 import { MenubarDemo } from "./components/Header";
+import {
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuTrigger,
+} from "@/components/ui/context-menu";
+
 export default function RootLayout({ children }: any) {
   return (
-    <div className="min-h-screen bg-background font-sans antialiased">
+      <ContextMenu>
+      <ContextMenuTrigger>
+      <div className="min-h-screen bg-background font-sans antialiased">
       <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
         {PCV ? <Pc /> : ""}
         <div className="w-[100vw] fixed top-[60px] z-50">
@@ -16,6 +25,15 @@ export default function RootLayout({ children }: any) {
         </div>
         <TailwindIndicator />
       </ThemeProvider>
-    </div>
+      </div>
+      </ContextMenuTrigger>
+      <ContextMenuContent>
+        <ContextMenuItem>Back</ContextMenuItem>
+        <ContextMenuItem>Reload</ContextMenuItem>
+        <ContextMenuItem>Team</ContextMenuItem>
+        <ContextMenuItem>Subscription</ContextMenuItem>
+      </ContextMenuContent>
+    </ContextMenu>
+
   );
 }

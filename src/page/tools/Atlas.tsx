@@ -37,12 +37,7 @@ import {
 } from "@/components/ui/table";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-const options: Options = {
-  filename: "using-function.pdf",
-  page: {
-    margin: 20,
-  },
-};
+
 
 // Define the months
 const months = [
@@ -66,33 +61,36 @@ const chartConfig = {
     color: "hsl(var(--chart-1))",
   },
 } satisfies ChartConfig;
-// const chartConfig2 = {
-//   DNI: {
-//     label: "DNI",
-//     color: "hsl(var(--chart2))",
-//   },
-//   DIF: {
-//     label: "DIF",
-//     color: "hsl(var(--chart1))",
-//   },
-//   GHI: {
-//     label: "GHI",
-//     color: "hsl(var(--chart1))",
-//   },
-//   GTI_opta: {
-//     label: "GTI",
-//     color: "hsl(var(--chart1))",
-//   },
-// } satisfies ChartConfig;
+
 function Atlas() {
   const [latitude, setLatitude] = useState("");
   const [longitude, setLongitude] = useState("");
   const [location, setLocation] = useState("");
   const [solarData, setSolarData] = useState<any>();
   const [solarDataTotal, setSolarDataTotal] = useState<any>();
+  const [isDownloading, setIsDownloading] = useState<boolean>(false); // สร้าง state เพื่อติดตามสถานะ
   const [error, setError] = useState("");
   const getTargetElement = () => document.getElementById("report");
-  const downloadPdf = () => generatePDF(getTargetElement, options);
+  const options: Options = {
+    filename: `${location}_environment.pdf`,
+    page: {
+      margin: 20,
+    },
+  };
+  const downloadPdf = async () => {
+    await setIsDownloading(true); // ตั้งค่า state เป็น true เมื่อเริ่มดาวน์โหลด
+    setTimeout(() => {
+      try {
+        // เรียกฟังก์ชัน generatePDF
+        generatePDF(getTargetElement, options);
+      } catch (error) {
+        console.error("Error generating PDF:", error);
+      } finally {
+        setIsDownloading(false); // ตั้งค่า state เป็น false หลังดาวน์โหลดเสร็จ
+      }
+    }, 500);
+  };
+
   async function fetchData() {
     if (!latitude || !longitude) {
       setError("กรุณากรอกทั้ง Latitude และ Longitude");
@@ -113,7 +111,7 @@ function Atlas() {
           GHI: Monthly.GHI[index],
           GTI_opta: Monthly.GTI_opta[index],
         };
-      });
+      });      
       setSolarDataTotal(Yearly);
       setSolarData(monthlyData);
       // console.log(solarData)
@@ -124,11 +122,7 @@ function Atlas() {
       setSolarData(null);
     }
   }
-  useEffect(() => {
-    if (solarData) {
-      console.log("Updated solarData:", solarData);
-    }
-  }, [solarData]);
+
   return (
     <div className="w-[90%] mx-auto mt-[50px] pt-[20px]">
       <div className="flex justify items-center">
@@ -163,21 +157,22 @@ function Atlas() {
         />
         <Button
           onClick={downloadPdf}
-          className="ml-4 px-[30px] w-[100px] bg-blue-800"
+          className="ml-4 px-[30px] w-[100px]"
+          disabled={!solarData|| isDownloading}
         >
           Download
         </Button>
       </div>
-      <div className="" id="report">
-        <img src="/logo.png" className="w-[150px] mx-auto" />
-        <h1 className="text-6xl text-center font-bold pt-[30px] pb-[50px]">
+      <div className={`${isDownloading ? "w-[1150px] mx-auto" : ""}`} id="report">
+        <img src="/logo.png" className={`w-[150px] mx-auto ${isDownloading ? "" : "hidden"}`} />
+        <h1 className={`text-6xl text-center font-bold pt-[30px] pb-[50px] ${isDownloading ? "" : "hidden"}`}>
           Environment Data
         </h1>
-        <div className="lat flex ml-10 justify-center pb-4 font-semibold text-2xl">
+        <div className={`${isDownloading ? "lat flex ml-10 justify-center pb-4 font-semibold text-2xl" : "hidden"}`}>
           <p className="mx-4">Latitude : {parseFloat(latitude).toFixed(2)}</p>
           <p className="mx-4">Longitude : {parseFloat(longitude).toFixed(2)}</p>
         </div>
-        <p className="mx-4 lat flex ml-10 justify-center pb-10 font-semibold text-2xl">
+        <p className={`${isDownloading ? "lat flex ml-10 justify-center pb-4 font-semibold text-2xl" : "hidden"}`}>
           Location : {location}
         </p>
         <div className="flex gap-0 flex-col md:flex-row">
@@ -212,11 +207,13 @@ function Atlas() {
                       position="top"
                       offset={12}
                       className="fill-foreground"
+                      formatter={(value:number) => value.toFixed(2)}
                       fontSize={12}
                     />
                   </Bar>
                 </BarChart>
               </ChartContainer>
+              
             </CardContent>
           </Card>
           <Card className="sm:w-full md:w-[calc(50%-16px)] m-2">
@@ -251,6 +248,7 @@ function Atlas() {
                     <LabelList
                       position="top"
                       offset={12}
+                      formatter={(value:number) => value.toFixed(2)}
                       className="fill-foreground"
                       fontSize={12}
                     />

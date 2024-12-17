@@ -14,7 +14,6 @@ function Main() {
   }
   return (
     <div>
-      <button onClick={() => Hello()}>dsvf</button>
       <div className="w-[90%] mx-auto mt-[50px] border-primary border-[2px] border-dashed">
         <h1 className="py-[100px] mx-auto text-center font-bold w-full">
           Grid Tie system
